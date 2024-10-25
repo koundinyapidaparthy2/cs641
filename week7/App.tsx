@@ -3,6 +3,9 @@ import {Button, StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavigationContainer, NavigatorScreenParams} from "@react-navigation/native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const Stack = createNativeStackNavigator();
@@ -50,12 +53,12 @@ export default function App() {
   return (
 
       <NavigationContainer>
-        <Drawer.Navigator>
-          <Drawer.Screen name="Home" component={Home}/>
-          <Drawer.Screen name="Settings" component={Settings}/>
-          <Drawer.Screen name="Account" component={Account}/>
-          <Drawer.Screen name="MyAddress" component={MyAddress}/>
-        </Drawer.Navigator>
+        <Tab.Navigator>
+          <Tab.Screen name="Home" component={Home}/>
+          <Tab.Screen name="Settings" component={Settings}/>
+          <Tab.Screen name="Account" component={Account}/>
+          <Tab.Screen name="MyAddress" component={MyAddress}/>
+        </Tab.Navigator>
       </NavigationContainer>
   );
 }
