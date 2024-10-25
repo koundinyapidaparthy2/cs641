@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavigationContainer, NavigatorScreenParams} from "@react-navigation/native";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+const Drawer = createDrawerNavigator();
 
 const Stack = createNativeStackNavigator();
 
@@ -48,12 +50,12 @@ export default function App() {
   return (
 
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home}/>
-          <Stack.Screen name="Settings" component={Settings}/>
-          <Stack.Screen name="Account" component={Account}/>
-          <Stack.Screen name="MyAddress" component={MyAddress}/>
-        </Stack.Navigator>
+        <Drawer.Navigator>
+          <Drawer.Screen name="Home" component={Home}/>
+          <Drawer.Screen name="Settings" component={Settings}/>
+          <Drawer.Screen name="Account" component={Account}/>
+          <Drawer.Screen name="MyAddress" component={MyAddress}/>
+        </Drawer.Navigator>
       </NavigationContainer>
   );
 }
