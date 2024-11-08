@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Alert, TextInput, TouchableOpacity, StyleSheet,
   Pressable, TouchableWithoutFeedback, Keyboard, ImageBackground
  } from 'react-native';
-
-import { useDispatch } from 'react-redux';
-import { logIn } from '../store/authSlice';
-
-import { AppDispatch } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { signUpRequest } from '../store/authSlice';
 
 import StyleTheme from '../theme/StyleTheme';
 import * as Animatable from 'react-native-animatable';
@@ -15,6 +13,7 @@ import * as Animatable from 'react-native-animatable';
 
 const SignUp = ({ navigation }: { navigation: any }) => {
   const dispatch: AppDispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const [name, setName] = useState('');
   const [birthDate, setBirthDate] = useState<Date | undefined>(undefined);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -22,11 +21,19 @@ const SignUp = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
+  const formatDate = (date: Date) => {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is 0-indexed, so we add 1
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    return `${month}-${day}-${year}`;
+  };
+
   const handleSignUp = () => {
     if (password === confirmPassword) {
+    const formattedBirthDate = birthDate ? formatDate(birthDate) : '';
       // Handle sign-up logic here, like calling API and saving user
-      dispatch(logIn());
-      Alert.alert('Success', 'Account created successfully!');
+      dispatch(signUpRequest({ name, email, password, dateOfBirth: formattedBirthDate }));
     } else {
       Alert.alert('Error', 'Passwords do not match.');
     }
@@ -39,84 +46,90 @@ const SignUp = ({ navigation }: { navigation: any }) => {
     }
   };
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Main');
+    }
+  }, [isLoggedIn, navigation]);
+  
    return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <ImageBackground
+      <ImageBackground
        source={require('../assets/login_background.png')}
        style={styles.backgroundImage}
       >
-      <View style={styles.container}>
-        <Animatable.Text
-          style={[StyleTheme.glowingText, { marginBottom: StyleTheme.spacing.large }]}
-          animation="pulse"
-          iterationCount="infinite"
-          duration={1500}
-        >
-          MIND CARE
-        </Animatable.Text>
-        <Text style={styles.description}>
-          Create an account to start your mental wellness journey.
-        </Text>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={styles.container}>
+            <Animatable.Text
+              style={[StyleTheme.glowingText, { marginBottom: StyleTheme.spacing.large }]}
+              animation="pulse"
+              iterationCount="infinite"
+              duration={1500}
+            >
+              MIND CARE
+            </Animatable.Text>
+            <Text style={styles.description}>
+              Create an account to start your mental wellness journey.
+            </Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
+            <TextInput
+              style={styles.input}
+              placeholder="Name"
+              value={name}
+              onChangeText={setName}
+            />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
+            />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Confirm Password"
-          secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-        />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              secureTextEntry
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
 
-        <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-          <Text style={styles.datePickerText}>
-            {birthDate ? birthDate.toDateString() : 'Select Birthdate'}
-          </Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+              <Text style={styles.datePickerText}>
+                {birthDate ? birthDate.toDateString() : 'Select Birthdate'}
+              </Text>
+            </TouchableOpacity>
 
-        {showDatePicker && (
-          <DateTimePicker
-            value={birthDate || new Date()}
-            mode="date"
-            display="default"
-            onChange={onDateChange}
-          />
-        )}
+            {showDatePicker && (
+              <DateTimePicker
+                value={birthDate || new Date()}
+                mode="date"
+                display="default"
+                onChange={onDateChange}
+              />
+            )}
 
-        <Pressable style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.text}>Sign Up</Text>
-        </Pressable>
+            <Pressable style={styles.button} onPress={handleSignUp}>
+              <Text style={styles.text}>Sign Up</Text>
+            </Pressable>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.switchText}>
-            Already have an account? Login
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.switchText}>
+                Already have an account? Login
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
       </ImageBackground>
-    </TouchableWithoutFeedback>
   );
 };
 

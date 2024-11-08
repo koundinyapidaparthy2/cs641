@@ -4,18 +4,15 @@ import BottomLayout from './BottomLayout';
 
 const DrawerIcon = ({ navigation } : { navigation: any }) => (
   <TouchableOpacity onPress={() => navigation.openDrawer()}>
-    <Text>☰</Text> 
+      <Text style={styles.drawerIcon}>☰</Text> 
   </TouchableOpacity>
 );
 
-const MainLayout = ({ navigation } : { navigation: any }) => {
+const MainLayout = ({ navigation: drawerNavigation } : { navigation: any }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.topDrawer}>
-        <DrawerIcon navigation={navigation} />
-      </View>
       <View style={styles.content}>
-        <BottomLayout navigation={navigation} />
+        <BottomLayout drawerNavigation={drawerNavigation} />
       </View>
     </View>
   )
@@ -36,6 +33,8 @@ const styles = StyleSheet.create({
   },
   drawerIcon: {
     fontSize: 24,
+    position: 'absolute',
+    
   },
   content: {
     flex: 1,
