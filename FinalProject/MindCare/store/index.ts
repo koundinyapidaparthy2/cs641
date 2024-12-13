@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
+import moodReducer from './moodSlice';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas'; // Make sure this path matches your rootSaga file location
 
@@ -9,6 +10,7 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    mood: moodReducer
   },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: false }).concat(sagaMiddleware),
 

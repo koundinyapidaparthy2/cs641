@@ -119,7 +119,7 @@ const SignUp = ({ navigation }: { navigation: any }) => {
             )}
 
             <Pressable style={styles.button} onPress={handleSignUp}>
-              <Text style={styles.text}>Sign Up</Text>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </Pressable>
 
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: StyleTheme.colors.primary,
     marginTop: 10,
   },
-  text: {
+  buttonText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+
 interface AuthState {
   isLoggedIn: boolean;
   token: string | null;
@@ -18,6 +19,18 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    initializeAuthRequest: (state) => {
+      state.loading = true;
+    },
+    initializeAuthSuccess: (state, action: PayloadAction<string | null>) => {
+      state.loading = false;
+      state.token = action.payload;
+      state.isLoggedIn = !!action.payload;
+    },
+    initializeAuthFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     loginRequest: (state, action: PayloadAction<{ email: string; password: string }>) => {
       state.loading = true;
       state.error = null;
@@ -35,15 +48,6 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    signUpSuccess: (state, action: PayloadAction<{ token: string }>) => {
-      state.loading = false;
-      state.isLoggedIn = true;
-      state.token = action.payload.token;
-    },
-    signUpFailure: (state, action: PayloadAction<string>) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
     logOut: (state) => {
       state.isLoggedIn = false;
       state.token = null;
@@ -51,6 +55,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginRequest, loginSuccess, loginFailure,
-  signUpRequest, signUpSuccess, signUpFailure, logOut } = authSlice.actions;
+export const { 
+  loginRequest, loginSuccess, loginFailure,
+  signUpRequest, logOut, initializeAuthRequest, 
+  initializeAuthSuccess, initializeAuthFailure } = authSlice.actions;
+
+
 export default authSlice.reducer;

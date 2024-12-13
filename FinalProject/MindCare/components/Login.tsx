@@ -85,7 +85,7 @@ const Login = ({ navigation }: { navigation: any }) => {
               <ActivityIndicator size="large" color={StyleTheme.colors.primary} />
             ) : (
               <Pressable style={styles.button} onPress={handleLogin}>
-                <Text style={styles.text}>Log In</Text>
+                <Text style={styles.buttonText}>Log In</Text>
               </Pressable>
             )}
 
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: StyleTheme.colors.primary,
   },
-  text: {
+  buttonText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',

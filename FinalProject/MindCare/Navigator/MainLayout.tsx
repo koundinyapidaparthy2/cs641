@@ -1,42 +1,28 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ImageBackground } from 'react-native';
 import BottomLayout from './BottomLayout';
 
-const DrawerIcon = ({ navigation } : { navigation: any }) => (
-  <TouchableOpacity onPress={() => navigation.openDrawer()}>
-      <Text style={styles.drawerIcon}>☰</Text> 
-  </TouchableOpacity>
-);
-
-const MainLayout = ({ navigation: drawerNavigation } : { navigation: any }) => {
+const MainLayout = ({ navigation: drawerNavigation }: { navigation: any }) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
+      <ImageBackground
+        source={require('../assets/Mindcare.png')} // Ensure the file path is correct
+        style={styles.backgroundImage}
+        imageStyle={{ opacity: 0.5 }} // Adjust opacity for visibility
+      >
         <BottomLayout drawerNavigation={drawerNavigation} />
-      </View>
-    </View>
-  )
-}
+      </ImageBackground>
+  );
+};
 
-export default MainLayout
+export default MainLayout;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'transparent',
   },
-  topDrawer: {
-    paddingTop: 40, // Adjust for top spacing on iOS
-    paddingHorizontal: 10,
-    backgroundColor: '#f8f8f8',
-    height: 60,
-    justifyContent: 'center',
-  },
-  drawerIcon: {
-    fontSize: 24,
-    position: 'absolute',
-    
-  },
-  content: {
+  backgroundImage: {
     flex: 1,
+    resizeMode: 'cover', // Ensures the image covers the view
   },
 });

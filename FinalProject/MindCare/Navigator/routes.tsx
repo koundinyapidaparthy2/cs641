@@ -23,12 +23,5 @@ export const TabRoutes = [
         icon: 'happy-outline',
         title: "Emotions Journal",
         headerShow: true
-    },
-    {
-        name: "Analytics",
-        component: Analytics,
-        icon: 'analytics-outline',
-        title: "Progress Overview",
-        headerShow: true
-    },
+    }
 ];
